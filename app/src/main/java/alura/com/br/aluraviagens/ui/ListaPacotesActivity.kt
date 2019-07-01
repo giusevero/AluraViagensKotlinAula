@@ -16,11 +16,17 @@ class ListaPacotesActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_lista_pacotes)
-
-        lista_pacotes_listview.adapter = ListaPacotesAdapter(PacoteDAO().lista(), this)
+        val listaPacotes = PacoteDAO().lista()
+        lista_pacotes_listview.adapter = ListaPacotesAdapter(listaPacotes, this)
         title = titulo
 
-        val intent = Intent(this, ResumoPacoteActivity::class.java)
-        startActivity(intent)
+        lista_pacotes_listview.setOnItemClickListener { adapterView, view, i, l ->
+            val pacoteClicado = listaPacotes.get(i)
+            val intent = Intent(this, ResumoPacoteActivity::class.java)
+            intent.putExtra("pacote", pacoteClicado)
+            startActivity(intent)
+        }
     }
+
+
 }
